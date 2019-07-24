@@ -37,7 +37,8 @@
                     </form>
                     <div class="toolbar-btn-action">
                         <!--<a class="btn btn-primary m-r-5" href="#!"><i class="mdi mdi-plus"></i> 新增</a>-->
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">新增</button>
+                        <!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">新增</button>-->
+                        <a class="btn btn-primary m-r-5" href="#!" data-toggle="modal" data-target=".bs-example-modal-lg"><i class="mdi mdi-plus"></i> 新增</a>
 
                         <a class="btn btn-success m-r-5" href="#!"><i class="mdi mdi-check"></i> 启用</a>
                         <a class="btn btn-warning m-r-5" href="#!"><i class="mdi mdi-block-helper"></i> 禁用</a>
@@ -75,8 +76,8 @@
                                 <td th:text="${user.phone}"></td>
                                 <td>
                                     <div class="btn-group">
-                                        <a class="btn btn-xs btn-default" href="#!" title="编辑" data-toggle="tooltip"><i class="mdi mdi-pencil"></i></a>
-                                        <a class="btn btn-xs btn-default" href="#!" title="删除" data-toggle="tooltip"><i class="mdi mdi-window-close"></i></a>
+                                        <a class="btn btn-xs btn-default" href="#!" th:onclick="'editInfo('+${user.userId}+');'" title="编辑" data-toggle="tooltip"><i class="mdi mdi-pencil"></i></a>
+                                        <a class="btn btn-xs btn-default" href="#!" th:onclick="'delInfo('+${user.userId}+');'" title="删除" data-toggle="tooltip"><i class="mdi mdi-window-close"></i></a>
                                     </div>
                                 </td>
                             </tr>
@@ -159,6 +160,45 @@
         });
     });
 
+    function editInfo(e) {
+        $.ajax({
+            async:false,//同步，异步
+            url:"/user/info", //请求的服务端地址
+            data:{ id:e },
+            type:"get",
+            dataType:"json",
+            success:function(data){
+                //成功之后的处理，返回的数据就是 data
+                if(data.code == 200){
+                    $('.modal').show();
+                    alert(data.data);
+                }
+//                alert(data);
+            },
+            error:function(){
+                alert('error'); //错误的处理
+            }
+        });
+    }
+
+
+    function delInfo(e) {
+        $.ajax({
+            async:false,//同步，异步
+            url:"/user/del", //请求的服务端地址
+            data:{ id:e },
+            type:"post",
+            dataType:"json",
+            success:function(data){
+                //成功之后的处理，返回的数据就是 data
+
+                alert(data);
+            },
+            error:function(){
+                alert('error'); //错误的处理
+            }
+        });
+    }
 </script>
 </body>
 </html>

@@ -1,14 +1,13 @@
 package com.dudg.bootweb.controller;
 
+import com.dudg.bootweb.dto.BaseResult;
 import com.dudg.bootweb.model.User;
 import com.dudg.bootweb.service.UserService;
+import com.fasterxml.jackson.databind.ser.Serializers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,10 +30,27 @@ public class UserController {
 
 
     @ResponseBody
-    @RequestMapping(value = "/add", produces = {"application/json;charset=UTF-8"})
+    @PostMapping(value = "/add", produces = {"application/json;charset=UTF-8"})
     public int addUser(User user){
+        if (user != null && user.getUserId() != null) {
+            return userService.update(user);
+        }
         return userService.addUser(user);
     }
+
+    @ResponseBody
+    @PostMapping(value = "/del")
+    public BaseResult delUser(Integer id){
+        return new BaseResult(userService.deleteById(id));
+    }
+
+
+    @ResponseBody
+    @GetMapping(value = "/info")
+    public BaseResult getUserById(Integer id){
+        return new BaseResult(userService.selectById(id));
+    }
+
 
     @ResponseBody
     @RequestMapping(value = "/all/{pageNum}/{pageSize}", produces = {"application/json;charset=UTF-8"})

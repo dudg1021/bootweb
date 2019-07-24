@@ -23,8 +23,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int addUser(User user) {
-
         return userMapper.insertSelective(user);
+    }
+
+    @Override
+    public User selectById(Integer id){
+        return userMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public int update(User user){
+        return userMapper.updateByPrimaryKeySelective(user);
+    }
+
+    @Override
+    public int deleteById(Integer id){
+        return userMapper.deleteByPrimaryKey(id);
     }
 
     /*
